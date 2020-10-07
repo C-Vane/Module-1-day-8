@@ -3,6 +3,9 @@ window.addEventListener("DOMContentLoaded", function () {
   let operation = "";
   let previous_result = 0;
   const result = document.getElementById("result");
+  let oper_history = document.getElementById("operations");
+  
+  
   // math operation functions
   const sum = (x, y) => x + y;
   const differece = (x, y) => x - y;
@@ -12,7 +15,9 @@ window.addEventListener("DOMContentLoaded", function () {
   const sq_root = (x) => Math.sqrt(x);
   //saving the pressed numbers
   const numericButtonPressed = (event) => {
+
     const number_pressed = event.target.value;
+    oper_history.innerHTML+=number_pressed;
     if (result.value === "0") {
       result.value = number_pressed;
     } else result.value += number_pressed;
@@ -21,21 +26,22 @@ window.addEventListener("DOMContentLoaded", function () {
   //calculator
   const functionButtonPressed = (event) => {
     const key_pressed = event.target.value;
-
+    oper_history.innerHTML+=key_pressed;
     switch (key_pressed) {
+    
       case "=":
         switch (operation) {
           case "+":
-            result.value = sum(previous_result, parseInt(result.value));
+            result.value = sum(previous_result, parseFloat(result.value)).toFixed(2);
             break;
           case "-":
-            result.value = differece(previous_result, parseInt(result.value));
+            result.value = differece(previous_result, parseFloat(result.value)).toFixed(2);
             break;
           case "*":
-            result.value = moltiplication(previous_result, parseInt(result.value));
+            result.value = moltiplication(previous_result, parseFloat(result.value)).toFixed(2);
             break;
           case "/":
-            result.value = division(previous_result, parseInt(result.value));
+            result.value = division(previous_result, parseFloat(result.value)).toFixed(2);
             break;
 
           default:
@@ -43,24 +49,26 @@ window.addEventListener("DOMContentLoaded", function () {
         }
         break;
       case "x²":
-        result.value = square(parseInt(result.value));
+        result.value = square(parseFloat(result.value)).toFixed(2);
         break;
 
       case "√x":
-        result.value = sq_root(parseInt(result.value));
+        result.value = sq_root(parseFloat(result.value)).toFixed(2);
         break;
       case "CE":
         console.log("case is CE");
         result.value = 0;
         previous_result = 0;
         operation = "";
+        oper_history.innerHTML= "";
         break;
       case "C":
         result.value = result.value.slice(0, -1);
+        oper_history.innerHTML= oper_history.innerHTML.slice(0, -1);
         break;
 
       default:
-        previous_result = parseInt(result.value);
+        previous_result = parseFloat(result.value);
         operation = key_pressed;
         result.value = "0";
         break;
